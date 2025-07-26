@@ -5,13 +5,19 @@ import mongoose from 'mongoose';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const articles = await Article.find();
+
+  const { archived } = req.query;
+  const filter = archived === 'true'
+    ? { archiveDate: { $ne: null } }  // archived
+    : { archiveDate: null };          // active
+
+  const articles = await Article.find(filter);
+
   res.json(articles);
 });
 
 // PUT /articles/:id — archive article by setting archiveDate
 router.put('/:id', async (req, res) => {
-  console.log(req.params.id)
   try {
     const { id } = req.params;
     const { archiveDate } = req.body;
