@@ -23,18 +23,28 @@ const ArchivedNews: React.FC = () => {
   }, []);
 
   const handleDelete = async (id: string) => {
-    await deleteArticle(id); // Call your backend API to delete
+    setProcessingId(id)
+    try {
+      await deleteArticle(id);
 
-    const newNews = [...news]; // Clone the current news array
-
-    for (let i = 0; i < newNews.length; i++) {
-      if (newNews[i].id === id) {
-        newNews.splice(i, 1); // Remove the item at index i
-        break;
+      const newNews = [...news];
+      for (let i = 0; i < newNews.length; i++) {
+        if (newNews[i].id === id) {
+          newNews.splice(i, 1);
+          break;
+        }
       }
+      setNews(newNews);
+    }
+    catch (error) {
+      console.error('Failed to delete article:', error);
+      setError('Failed to delete article');
+      setTimeout(() => setError(null), 5000);
+    }
+    finally {
+      setProcessingId(null)
     }
 
-    setNews(newNews); // Update state to trigger re-render
   };
   return (
     <div className="w-full bg-gray-100 p-4 rounded-lg shadow-sm">
@@ -47,6 +57,8 @@ const ArchivedNews: React.FC = () => {
 
       {loading ? (
         <div className="text-center py-8">Loading...</div>
+      ) : news.length === 0 ? (
+        <div className="text-center py-8 text-gray-500">No archived articles</div>
       ) : (
         news.map(item => (
           <NewsItem

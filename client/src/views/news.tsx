@@ -27,10 +27,11 @@ const News: React.FC = () => {
       const updated = await archiveArticle(id);
       const newNews = [...news];
 
-      // Functional approach was discarded since it does not use break. I understand loops and breaks to be more performant if large arrays are used without pagination.
+      // Functional approach was discarded since it does not use break. 
+      // I understand loops and breaks to be more readable and more performant if large arrays are used without pagination.
       for (let i = 0; i < newNews.length; i++) {
         if (newNews[i].id === id) {
-          newNews[i].archiveDate = updated.archiveDate;
+          newNews.splice(i, 1);
           break;
         }
       }
@@ -55,13 +56,15 @@ const News: React.FC = () => {
       )}
       {loading ? (
         <div className="text-center py-8">Loading...</div>
+      ) : news.length === 0 ? (
+        <div className="text-center py-8 text-gray-500">No news articles available</div>
       ) : (
-        news.filter((n: NewsItemData) => !n.archiveDate).map(item => (
+
+        news.map(item => (
           <NewsItem
             key={item.id}
             item={item}
             onArchive={handleArchive}
-            onDelete={() => { }}
             isProcessing={processingId === item.id}
           />
         ))

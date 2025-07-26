@@ -14,8 +14,8 @@ const NewsItem: React.FC<Props> = ({ item, onArchive, onDelete, isProcessing }) 
     <div className="news-item bg-white shadow-md rounded-lg p-6 mb-4 border border-gray-200 space-y-4">
       <h3>{item.title}</h3>
       <p>{item.content}</p>
-      <p>{item.author}</p>
-      <p>{item.date}</p>
+      <p>Author : {item.author}</p>
+      <p> Date : {item.date}</p>
       {!item.archiveDate && (
         <>
           <button onClick={() => onArchive?.(item.id)}>
@@ -24,9 +24,12 @@ const NewsItem: React.FC<Props> = ({ item, onArchive, onDelete, isProcessing }) 
         </>
       )}
       {item.archiveDate && (
-        <button onClick={() => onDelete?.(item.id)}>
-          {isProcessing ? 'Removing...' : 'Remove'}
-        </button>
+        <>
+          <p>Achive Date : {item.archiveDate}</p>
+          <button onClick={() => onDelete?.(item.id)}>
+            {isProcessing ? 'Removing...' : 'Remove'}
+          </button>
+        </>
       )}
     </div>
   );

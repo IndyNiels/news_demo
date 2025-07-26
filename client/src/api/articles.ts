@@ -29,4 +29,3 @@ export const archiveArticle = async (id: string) => {
   return response.data;
 };
 
-// Add more functions (e.g., createArticle, updateArticle) as needed
