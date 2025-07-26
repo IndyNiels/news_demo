@@ -12,9 +12,6 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello world');
-});
 
 app.use('/routes/articles', articleRoutes);
 

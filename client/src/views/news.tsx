@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { type NewsItemData } from '../types/news';
 import NewsItem from '../components/newsItem';
+import { fetchArticles, archiveArticle } from '../api/articles';
 
 const News: React.FC = () => {
-  const [news, setNews] = useState<NewsItemData[]>([
-    { id: '1', title: 'Hello', content: 'World', isArchived: false },
-    { id: '1', title: 'Hello', content: 'World', isArchived: false },
-  ]);
+  const [news, setNews] = useState<NewsItemData[]>([]);
 
-  const handleArchive = (id: string) => {
-    setNews(prev => prev.map(item =>
-      item.id === id ? { ...item, isArchived: true } : item
-    ));
+  useEffect(() => {
+    fetchArticles().then(setNews).catch(console.error);
+  }, []);
+
+
+  const handleArchive = async (id: string) => {
+    const updated = await archiveArticle(id);
+
+    const newNews = [...news];
+
+    for (let i = 0; i < newNews.length; i++) {
+      if (newNews[i].id === id) {
+        newNews[i].archiveDate = updated.archiveDate;
+        break;
+      }
+    }
+
+    setNews(newNews);
   };
 
-  const handleDelete = (id: string) => {
-    setNews(prev => prev.filter(item => item.id !== id));
-  };
 
   return (
     <div className="w-full bg-gray-100 p-4 rounded-lg shadow-sm">
       <h2 className="text-xl font-semibold mb-4">News</h2>
-      {news.filter(n => !n.isArchived).map(item => (
-        <NewsItem key={item.id} item={item} onArchive={handleArchive} onDelete={handleDelete} />
+      {news.filter((n: NewsItemData) => !n.archiveDate).map(item => (
+        <NewsItem key={item.id} item={item} onArchive={handleArchive} onDelete={() => { }} />
       ))}
     </div>
   );
