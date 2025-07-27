@@ -4,13 +4,11 @@ const API_BASE = 'http://localhost:3001/routes';
 
 export const fetchNewArticles = async () => {
   const response = await axios.get(`${API_BASE}/articles?archived=false`);
-  console.log(response.data)
   return response.data;
 };
 
 export const fetchArchivedArticles = async () => {
   const response = await axios.get(`${API_BASE}/articles?archived=true`);
-  console.log(response.data)
   return response.data;
 };
 
