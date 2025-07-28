@@ -1,34 +1,29 @@
-# To start local mongodb database
+  ## Setup Instructions
 
-From the root of the project: 
+  ### 1. Start MongoDB Database
 
-docker-compose up -d
+  From the root of the project:
 
-# To restart database
+  ```bash
+  docker-compose up -d
 
-From root of the project: 
+  2. Start Client
 
-docker-compose down -v
-docker-compose up -d
+  cd client
+  npm install
+  npm run dev
 
-# To start client
+  3. Start Server
 
-```
-````
-```
-cd client 
-npm install
-npm run dev
-````
-``
-
-# To start server
-
-```
-cd server 
-npm install
-nodemon server.ts
-````
+  cd server
+  npm install
+  nodemon server.ts
 
 
 
+  Restart Database
+
+  To reset the database:
+
+  docker-compose down -v
+  docker-compose up -d
